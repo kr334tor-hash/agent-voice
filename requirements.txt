@@ -1,0 +1,30 @@
+# Core TTS
+f5-tts
+
+# Speech recognition
+faster-whisper
+
+# Audio I/O
+sounddevice
+soundfile
+numpy
+
+# GUI
+pyautogui
+pygetwindow
+pyperclip
+
+# Voice separation (for acquire-voice pipeline)
+demucs
+
+# Clipboard / automation
+pywin32; sys_platform == "win32"
+
+# yt-dlp for acquire-voice (YouTube download)
+yt-dlp
+
+# Note: SpeechBrain (for speaker enrollment) conflicts with F5-TTS.
+# Install it separately only when running voice_enroll.py:
+#   pip install speechbrain
+# Then uninstall it before running tars_control.py:
+#   pip uninstall speechbrain -y

@@ -1,0 +1,32 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+
+# Audio files — don't commit reference audio or generated speech
+samples/*.wav
+samples/*.mp3
+samples/*.flac
+samples/*.m4a
+samples/downloads/
+samples/demucs_out/
+samples/clips/
+output/
+
+# Voice profiles (personal biometric data)
+voices/
+
+# Runtime files
+tars_input.txt
+tars_crash.log
+tars_hook_debug.txt
+
+# Models cache (downloaded automatically on first run)
+models/
+
+# OS
+.DS_Store
+Thumbs.db
