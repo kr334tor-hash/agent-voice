@@ -1,9 +1,9 @@
-# TARS Voice
+# Agent Voice
 
-A local AI voice assistant that gives any AI agent a cloned voice.
-Built on F5-TTS, faster-whisper, and Silero VAD — runs entirely offline on your machine.
+Give any AI agent a cloned voice — fully local, no API keys, no cloud.
+Built on F5-TTS, faster-whisper, and Silero VAD.
 
-Originally built to give [Claude Code](https://claude.ai/code) a voice (specifically the voice of TARS from *Interstellar*), but works with any voice and any agent that can write to a file.
+Originally built to give [Claude Code](https://claude.ai/code) the voice of TARS from *Interstellar*, but works with any voice and any agent that can write to a file.
 
 ## What it does
 
@@ -87,7 +87,7 @@ Toggle **MIC ON** to start listening, **VOICE ON** to speak responses.
 
 ## Optional: Claude Code Stop Hook (auto-speak responses)
 
-The `tars_stop_hook.py` script fires after every Claude Code response and auto-writes the response text to `tars_input.txt`, which TARS then speaks.
+The `tars_stop_hook.py` script fires after every Claude Code response and auto-writes the response text to `tars_input.txt`, which the agent then speaks.
 
 To wire it up, add this to `.claude/settings.local.json` in your project:
 
@@ -100,7 +100,7 @@ To wire it up, add this to `.claude/settings.local.json` in your project:
         "hooks": [
           {
             "type": "command",
-            "command": "python /path/to/tars-voice/tars_stop_hook.py"
+            "command": "python /path/to/agent-voice/tars_stop_hook.py"
           }
         ]
       }
@@ -110,22 +110,6 @@ To wire it up, add this to `.claude/settings.local.json` in your project:
 ```
 
 Note: this adds latency on every response (F5-TTS synthesis time). Useful for voice-first workflows; skip it for normal coding sessions.
-
-## Optional: Speaker enrollment with /enroll-voice
-
-Enroll speakers so TARS can identify who is talking:
-
-```
-/enroll-voice
-```
-
-**Important:** SpeechBrain (used for enrollment) conflicts with F5-TTS. Install it only when enrolling (with `tars_control.py` closed), then uninstall it:
-
-```bash
-pip install speechbrain
-venv\Scripts\python.exe voice_enroll.py enroll "YourName"
-pip uninstall speechbrain -y
-```
 
 ## Project structure
 
@@ -138,7 +122,6 @@ tars_stop_hook.py      — Claude Code Stop hook (auto-speak responses)
 samples/               — Put your reference .wav here (gitignored)
 .claude/commands/
   acquire-voice.md     — /acquire-voice skill for Claude Code
-  enroll-voice.md      — /enroll-voice skill for Claude Code
 ```
 
 ## Stack
