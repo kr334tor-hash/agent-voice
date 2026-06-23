@@ -172,29 +172,45 @@ def transcribe(audio):
 
 def send_to_claude(text):
     try:
-        import pygetwindow as gw
-        import pyautogui
-
-        wins = gw.getWindowsWithTitle("Claude")
-        if not wins:
-            log_queue.put("Claude window not found.")
-            return
-
-        win = wins[0]
-        if win.isMinimized:
-            win.restore()
-        win.activate()
-        time.sleep(0.4)
-
-        x = win.left + win.width // 2
-        y = win.top + win.height - 70
-        pyautogui.click(x, y)
-        time.sleep(0.2)
-
+        import platform
         pyperclip.copy(text)
-        pyautogui.hotkey("ctrl", "v")
-        time.sleep(0.15)
-        pyautogui.press("enter")
+
+        if platform.system() == "Windows":
+            import pygetwindow as gw
+            import pyautogui
+            wins = gw.getWindowsWithTitle("Claude")
+            if not wins:
+                log_queue.put("Claude window not found.")
+                return
+            win = wins[0]
+            if win.isMinimized:
+                win.restore()
+            win.activate()
+            time.sleep(0.4)
+            x = win.left + win.width // 2
+            y = win.top + win.height - 70
+            pyautogui.click(x, y)
+            time.sleep(0.2)
+            pyautogui.hotkey("ctrl", "v")
+            time.sleep(0.15)
+            pyautogui.press("enter")
+        else:
+            # Linux — use xdotool (X11). On Wayland, falls back to clipboard only.
+            import subprocess
+            result = subprocess.run(
+                ["xdotool", "search", "--name", "Claude"],
+                capture_output=True, text=True
+            )
+            if result.returncode != 0 or not result.stdout.strip():
+                log_queue.put("Copied to clipboard (auto-send requires xdotool on X11 / not supported on Wayland)")
+                return
+            win_id = result.stdout.strip().split("\n")[0]
+            subprocess.run(["xdotool", "windowfocus", "--sync", win_id])
+            time.sleep(0.3)
+            subprocess.run(["xdotool", "key", "--clearmodifiers", "ctrl+v"])
+            time.sleep(0.15)
+            subprocess.run(["xdotool", "key", "Return"])
+
         log_queue.put(f"Sent: {text[:60]}...")
     except Exception as e:
         log_crash("send_to_claude", e)

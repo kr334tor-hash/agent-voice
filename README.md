@@ -44,7 +44,19 @@ venv\Scripts\pip install -r requirements.txt
 venv/bin/pip install -r requirements.txt
 ```
 
-### 3. Fix F5-TTS Windows crash (Windows only)
+### 3. Linux dependencies (Linux only)
+
+```bash
+sudo apt install python3-tk xclip xdotool
+```
+
+- `python3-tk` — required for the tkinter GUI
+- `xclip` — required for clipboard (pyperclip)
+- `xdotool` — required for auto-sending text to Claude Code on X11
+
+**Wayland note:** Auto-send to Claude Code uses `xdotool` which only works on X11. On Wayland (Ubuntu 22+, modern GNOME), auto-send is not supported — transcribed text is copied to clipboard instead, and you paste it manually. Everything else (TTS, STT, VAD, voice cloning) works fine on Wayland.
+
+### 3b. Fix F5-TTS Windows crash (Windows only)
 
 F5-TTS has a known Windows crash caused by its `Trainer` class importing pandas. Remove the import:
 

@@ -11,13 +11,15 @@ numpy
 
 # GUI
 pyautogui
-pygetwindow
 pyperclip
+
+# Window management (Windows only — Linux uses xdotool instead)
+pygetwindow; sys_platform == "win32"
 
 # Voice separation (for acquire-voice pipeline)
 demucs
 
-# Clipboard / automation
+# Windows-only clipboard support
 pywin32; sys_platform == "win32"
 
 # yt-dlp for acquire-voice (YouTube download)
